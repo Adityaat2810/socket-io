@@ -23,10 +23,17 @@ app.get('/',(req,res)=>{
 io.on("connection",(socket)=>{
     console.log('user connected')
     console.log("Id", socket.id)
-    // messeage will send to server 
-    //socket.emit(`welcome`,`welcome to the server ${socket.id}`)
-    //message will send to others 
-    socket.broadcast.emit(`welcome`,`welcome to the server`)
+
+    socket.on("message",(data)=>{
+        console.log(data)
+        //send message to evry one
+        io.emit("receive-message",data)
+    })
+
+    socket.on("disconnect",()=>{
+        console.log(`user disconnected `,socket.id)
+    })
+   
 
 })
 
